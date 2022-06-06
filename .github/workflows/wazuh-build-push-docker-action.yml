@@ -88,7 +88,7 @@ jobs:
         ls -la ${{ github.workspace }}
         ls -la ${{ github.workspace }}/dockerfiles
         ls -la ${{ github.workspace }}/dockerfiles/images
-        ls -la ${{ github.workspace }}/dockerfiles/images/wazuh_agent_filebeat_sources_cmake
+        ls -la ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmakee
      - name: Step 05 - Build and push
        uses: docker/build-push-action@v3
        with: 
