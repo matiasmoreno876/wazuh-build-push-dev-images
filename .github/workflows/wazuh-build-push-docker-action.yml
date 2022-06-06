@@ -84,6 +84,12 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}        
      - name: Step 05 - Build and push
+       run: |
+        ls -la ${{ github.workspace }}
+        ls -la ${{ github.workspace }}/dockerfiles
+        ls -la ${{ github.workspace }}/dockerfiles/images
+        ls -la ${{ github.workspace }}/dockerfiles/images/wazuh_agent_filebeat_sources_cmake
+     - name: Step 05 - Build and push
        uses: docker/build-push-action@v3
        with: 
         contex: ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake
