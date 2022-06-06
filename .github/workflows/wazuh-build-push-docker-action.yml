@@ -1,0 +1,85 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow build and push docker image
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      build-manager-image:
+        type: boolean
+        description: 'Build manager image'
+        required: false
+      wazuh-manager-version: 
+        description: 'Wazuh manager version'
+        default: 'v4.3.4-rc1'
+        required: false
+      elastic-manager-version: 
+        description: 'Elastic manager version'
+        default: '7.16.3'
+        required: false   
+     
+      build-agent-image:
+        type: boolean
+        description: 'Build agent image'
+        required: false
+      wazuh-agent-version: 
+        description: 'Wazuh agent version'
+        default: 'v4.3.4-rc1'
+        required: false
+      elastic-agent-version: 
+        description: 'Elastic manager version'
+        default: '7.16.3'
+        required: false
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  job-build-manager-image:
+    if: ${{ github.event.inputs.build-manager-image == 'true' }}
+    name: Run build and push manager image
+    runs-on: ubuntu-18.04
+    steps:
+     - name: Step 01 - Download Dockerfiles
+       uses: actions/checkout@v2
+     - name: Step 02 - Set up QEMU
+       uses: docker/setup-qemu-action@v2
+     - name: Step 03 - Set up Docker Buildx
+       uses: docker/setup-buildx-action@v2
+     - name: Step 04 - Login to DockerHub
+       uses: docker/login-action@v2
+       with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}        
+     - name: Step 05 - Build and push
+       uses: docker/build-push-action@v3
+       with: 
+        contex: ./images/wazuh_manager_filebeat_sources_cmake
+        build-args: WAZUH_VERSION=${{ github.event.inputs.wazuh-manager-version }},FILEBEAT_VERSION=${{ github.event.inputs.elastic-manager-version }},FILEBEAT_WAZUH_TEMPLATE_URL=https://raw.githubusercontent.com/wazuh/wazuh/4.0/extensions/elasticsearch/7.x/wazuh-template.json,FILEBEAT_WAZUH_MODULE_URL=https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.1.tar.gz
+        tags: ${{ github.event.inputs.wazuh-manager-image }}:${{ github.event.inputs.wazuh-manager-version }}-${{ github.event.inputs.elastic-manager-version }}
+        push: true
+
+  job-build-agent-image:
+    if: ${{ github.event.inputs.build-agent-image == 'true' }}
+    name: Run build and push agent image
+    runs-on: ubuntu-18.04
+    steps:
+     - name: Step 01 - Download Dockerfiles
+       uses: actions/checkout@v2
+     - name: Step 02 - Set up QEMU
+       uses: docker/setup-qemu-action@v2
+     - name: Step 03 - Set up Docker Buildx
+       uses: docker/setup-buildx-action@v2
+     - name: Step 04 - Login to DockerHub
+       uses: docker/login-action@v2
+       with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}        
+     - name: Step 05 - Build and push
+       uses: docker/build-push-action@v3
+       with: 
+        contex: ./images/wazuh_agent_ubuntu_sources_cmake
+        build-args: WAZUH_VERSION=${{ github.event.inputs.wazuh-agent-version }}
+        tags: wazuh_agent_ubuntu_sources_cmake:${{ github.event.inputs.wazuh-agent-version }}-${{ github.event.inputs.elastic-agent-version }}
+        push: true
