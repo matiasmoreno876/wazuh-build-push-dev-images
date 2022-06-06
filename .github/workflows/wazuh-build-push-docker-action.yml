@@ -74,16 +74,14 @@ jobs:
        with:
           path: dockerfiles
           ref: 'main'
-     - name: Step 02 - Set up QEMU
-       uses: docker/setup-qemu-action@v2
-     - name: Step 03 - Set up Docker Buildx
-       uses: docker/setup-buildx-action@v2
-     - name: Step 04 - Login to DockerHub
+     - name: Step 02 - Set up Docker Buildx
+       uses: docker/setup-buildx-action@v1
+     - name: Step 03 - Login to DockerHub
        uses: docker/login-action@v2
        with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}        
-     - name: Step 05 - Build and push
+     - name: Step 04 - Build and push
        run: |
         ls -la ${{ github.workspace }}
         ls -la ${{ github.workspace }}/dockerfiles
