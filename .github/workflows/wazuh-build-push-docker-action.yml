@@ -88,7 +88,7 @@ jobs:
         ls -la ${{ github.workspace }}/dockerfiles/images
         ls -la ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake
      - name: Step 05 - Build and push
-       uses: docker/build-push-action@v3
+       uses: docker/build-push-action@v2
        with: 
         contex: ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake
         file: ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake/Dockerfile
