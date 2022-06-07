@@ -85,7 +85,7 @@ jobs:
      - name: Step 05 - Build and push
        uses: docker/build-push-action@v2
        with: 
-        contex: "{{defaultContext}}:images/wazuh_agent_ubuntu_sources_cmake"
+        contex: ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake
         build-args: WAZUH_VERSION=${{ github.event.inputs.wazuh-agent-version }}
         tags: matiasmoreno876/wazuh-agent-image:${{ github.event.inputs.wazuh-agent-version }}-${{ github.event.inputs.elastic-agent-version }}
         push: true
