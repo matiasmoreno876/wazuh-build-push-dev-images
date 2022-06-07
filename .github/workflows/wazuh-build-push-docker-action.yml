@@ -69,6 +69,12 @@ jobs:
     name: Run build and push agent image
     runs-on: ubuntu-18.04
     steps:
+     - name: Step 01 - Download Dockerfiles
+       uses: actions/checkout@v2
+       with:
+          repository: matiasmoreno876/wazuh-build-push-dev-images
+          path: dockerfiles
+          ref: 'main'
      - name: Step 02 - Set up Docker Buildx
        uses: docker/setup-buildx-action@v1
      - name: Step 03 - Login to DockerHub
