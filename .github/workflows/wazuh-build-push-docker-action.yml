@@ -58,7 +58,7 @@ jobs:
      - name: Step 05 - Build and push
        uses: docker/build-push-action@v3
        with: 
-        contex: ${{ github.workspace }}/dockerfiles/images/wazuh_manager_filebeat_sources_cmake
+        context: ${{ github.workspace }}/dockerfiles/images/wazuh_manager_filebeat_sources_cmake
         file: ${{ github.workspace }}/dockerfiles/images/wazuh_manager_filebeat_sources_cmake/Dockerfile
         build-args: WAZUH_VERSION=${{ github.event.inputs.wazuh-manager-version }},FILEBEAT_VERSION=${{ github.event.inputs.elastic-manager-version }},FILEBEAT_WAZUH_TEMPLATE_URL=https://raw.githubusercontent.com/wazuh/wazuh/4.0/extensions/elasticsearch/7.x/wazuh-template.json,FILEBEAT_WAZUH_MODULE_URL=https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.1.tar.gz
         tags: matiasmoreno876/wazuh-manager-image:${{ github.event.inputs.wazuh-manager-version }}-${{ github.event.inputs.elastic-manager-version }}
@@ -85,7 +85,7 @@ jobs:
      - name: Step 05 - Build and push
        uses: docker/build-push-action@v2
        with: 
-        contex: ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake
+        context: ${{ github.workspace }}/dockerfiles/images/wazuh_agent_ubuntu_sources_cmake
         build-args: WAZUH_VERSION=${{ github.event.inputs.wazuh-agent-version }}
         tags: matiasmoreno876/wazuh-agent-image:${{ github.event.inputs.wazuh-agent-version }}-${{ github.event.inputs.elastic-agent-version }}
         push: true
