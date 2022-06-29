@@ -38,9 +38,13 @@ on:
         type: boolean
         description: 'Build cypress image'
         required: false
+      ubuntu-cypress-branch: 
+        description: 'Ubuntu cypress branch'
+        default: 'main'
+        required: false
       image-cypress-version: 
         description: 'Image cypress version'
-        default: '1.0.0'
+        default: '3.0.0'
         required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -124,5 +128,6 @@ jobs:
        uses: docker/build-push-action@v2
        with: 
         context: ${{ github.workspace }}/dockerfiles/images/ubuntu-cypress
+        build-args: UBUNTU_CYPRESS_BRANCH=${{ github.event.inputs.ubuntu-cypress-branch }}
         tags: matiasmoreno876/wazuh-ubuntu-cypress:${{ github.event.inputs.image-cypress-version }}
         push: true
